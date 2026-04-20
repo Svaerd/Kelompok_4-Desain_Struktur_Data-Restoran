@@ -1,3 +1,6 @@
+/*	Nama	: Catur Setyo Ragil
+	NRP		: 5027251066 */
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -5,7 +8,6 @@ import java.util.List;
 public class CategoryService {
     public static HashMap<String, List<String>> categoryMap = new HashMap<>();
 
-    // Orang 11: Category Mapper
     public static void mapOrderToCategory(String orderCode, String category) {
         List<String> orders = categoryMap.computeIfAbsent(category, k -> new ArrayList<>());
         if (!orders.contains(orderCode)) {
