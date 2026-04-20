@@ -1,18 +1,52 @@
-## Getting Started
+```mermaid
+classDiagram
+    %% Menentukan Kelas Main (Sistem Pusat)
+    class Main {
+        <<System Controller>>
+        +HashMap~String, Order~ orderDB
+        +HashMap~String, Item~ itemDB
+        +HashMap~String, Queue~ serviceQueues
+        +HashMap~String, Queue~ pendingQueues
+        +HashMap~String, List~ categoryMap
+        +insertOrderToDB(Order) void
+        +insertItemToDB(Item) void
+        +addItemToOrder(String, Item) void
+        +enqueueToService(Item) void
+        +processNextItem(String) void
+        +moveToPendingQueue(String, String) void
+        +recordStatusChange(Item, String, String) void
+    }
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+    %% Menentukan Kelas Order
+    class Order {
+        +String orderCode
+        +Item headItem
+        +Item tailItem
+        +Order(String code)
+    }
 
-## Folder Structure
+    %% Menentukan Kelas Item
+    class Item {
+        +String itemCode
+        +String name
+        +String category
+        +String currentStatus
+        +Stack~HistoryChange~ history
+        +Item next
+        +Item(String code, String name, String category)
+    }
 
-The workspace contains two folders by default, where:
+    %% Menentukan Kelas HistoryChange
+    class HistoryChange {
+        +String status
+        +String timestamp
+        +HistoryChange(String status, String timestamp)
+    }
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+    %% Relasi Antar Kelas
+    Main "1" --> "*" Order : Mengelola (Map)
+    Main "1" --> "*" Item : Mengelola (Map & Queue)
+    Order "1" *-- "1..*" Item : Memiliki (Linked List)
+    Item "1" *-- "1..*" HistoryChange : Mencatat (Stack)
+    Item --> Item : next
+```
